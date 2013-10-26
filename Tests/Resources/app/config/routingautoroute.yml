@@ -87,3 +87,31 @@ cmf_routing_auto:
                     pattern: -%d
                 not_exists_action: 
                     strategy: create
+
+        Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Resources\Document\Article:
+
+            content_path:
+                base:
+                    provider: 
+                        name: specified
+                        path: test/articles
+                    exists_action:
+                        strategy: use
+                    not_exists_action:
+                        strategy: create
+                locale:
+                    provider:
+                        name: locale
+                    exists_action:
+                        strategy: use
+                    not_exists_action:
+                        strategy: create
+            content_name:
+                provider: 
+                    name: content_method
+                    method: getTitle
+                exists_action: 
+                    strategy: auto_increment
+                    pattern: -%d
+                not_exists_action: 
+                    strategy: create
