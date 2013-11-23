@@ -5,6 +5,7 @@ namespace Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Functional\Subscriber;
 use Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Functional\BaseTestCase;
 use Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Resources\Document\Blog;
 use Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Resources\Document\Post;
+use Symfony\Cmf\Bundle\RoutingAutoBundle\Tests\Resources\Document\Page;
 
 class AutoRouteListenerTest extends BaseTestCase
 {
@@ -26,6 +27,22 @@ class AutoRouteListenerTest extends BaseTestCase
 
         $this->getDm()->flush();
         $this->getDm()->clear();
+    }
+
+    protected function createPage($name)
+    {
+        $parent = $this->getDm()->find(null, '/test');
+
+        $page = new Page;
+        $page->parent = $parent;
+        $page->name = $name;
+        $page->body = 'Body for page ' . $name;
+
+        $this->getDm()->persist($page);
+        $this->getDm()->flush();
+        $this->getDm()->clear();
+
+        return $page;
     }
 
     public function testPersistBlog()
@@ -156,5 +173,16 @@ class AutoRouteListenerTest extends BaseTestCase
         $this->assertCount(1, $routes);
         $this->assertInstanceOf('Symfony\Cmf\Bundle\RoutingAutoBundle\Document\AutoRoute', $routes[0]);
         $this->assertEquals('this-is-different', $routes[0]->getName());
+    }
+
+    public function testAutoRouteChanged()
+    {
+        $this->createPage('Page 1');
+        $page = $this->getDm()->find(null, '/test/Page 1');
+        $page->name = 'Page 5';
+        $this->getDm()->persist($page);
+        $this->getDm()->flush();
+
+
     }
 }

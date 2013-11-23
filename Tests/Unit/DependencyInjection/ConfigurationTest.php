@@ -41,6 +41,7 @@ class ConfigurationTest extends AbstractConfigurationTestCase
                             'strategy' => 'create',
                         ),
                     ),
+                    'content_change' => array(),
                 ),
             ),
         );

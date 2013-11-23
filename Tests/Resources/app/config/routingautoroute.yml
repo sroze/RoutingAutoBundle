@@ -117,5 +117,3 @@ cmf_routing_auto:
                     pattern: -%d
                 not_exists_action: 
                     strategy: create
-            on_content_change:
-                - { strategy: debug, options: { test: option } }
